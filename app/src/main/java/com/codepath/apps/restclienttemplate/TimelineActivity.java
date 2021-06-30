@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -46,14 +49,22 @@ public class TimelineActivity extends AppCompatActivity {
         populateHomeTimeline();
     }
 
-    public void onLogoutButton(View v){
-        //Forget who's logged in
-        TwitterApp.getRestClient(this).clearAccessToken();
-        //Navigate backwards to login screen
-        Intent i = new Intent(this, LoginActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Inflate menu
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.compose){
+            //Compose icon has been selected
+            Toast.makeText(this, "Compose" , Toast.LENGTH_SHORT).show();
+            //Navigate to the compose activity
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void populateHomeTimeline(){
@@ -76,6 +87,16 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure:" + response , throwable);
             }
         });
+    }
+
+    public void onLogoutButton(View v){
+        //Forget who's logged in
+        TwitterApp.getRestClient(this).clearAccessToken();
+        //Navigate backwards to login screen
+        Intent i = new Intent(this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
 }
