@@ -87,6 +87,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             if(tweet.entityPhoto != null){
                 Glide.with(context).load(tweet.entityPhoto).into(ivPhoto);
                 ivPhoto.setVisibility(View.VISIBLE);
+            }else{
+                ivPhoto.setVisibility(View.GONE);
             }
         }
     }
