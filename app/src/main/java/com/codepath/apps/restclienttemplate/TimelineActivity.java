@@ -41,6 +41,13 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.twitterlogo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setElevation(2);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         client = TwitterApp.getRestClient(this);
 
         //Find recycler view
