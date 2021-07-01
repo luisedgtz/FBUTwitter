@@ -4,13 +4,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -28,6 +28,9 @@ public class TimelineActivity extends AppCompatActivity {
 
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
+
+    private SwipeRefreshLayout swipeContainer;
+
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
@@ -48,7 +51,17 @@ public class TimelineActivity extends AppCompatActivity {
         //Recycler view setup: layout manager and the adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
-        populateHomeTimeline();
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        //Refresh listener
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchTimeLineAsync(0);
+            }
+        });
+
+        fetchTimeLineAsync(0);
     }
 
     @Override
@@ -66,6 +79,10 @@ public class TimelineActivity extends AppCompatActivity {
             Intent intent =  new Intent(this, ComposeActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
             return true;
+        } else if(item.getItemId() == R.id.btnLogout){
+            //btnLogout icon has been selected
+            //Logout
+            onLogoutButton();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -85,15 +102,17 @@ public class TimelineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void populateHomeTimeline(){
+    private void fetchTimeLineAsync(int page){
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.i(TAG, "onSuccess" + json.toString());
+                adapter.clear();
                 JSONArray jsonArray =  json.jsonArray;
+
+                Log.i(TAG, "onSuccess" + json.toString());
                 try {
-                    tweets.addAll(Tweet.fromJsonArray(jsonArray));
-                    adapter.notifyDataSetChanged();
+                    adapter.addAll(Tweet.fromJsonArray(jsonArray));
+                    swipeContainer.setRefreshing(false);
                 } catch (JSONException e) {
                     Log.e(TAG, "JSON exception" , e);
                     e.printStackTrace();
@@ -107,7 +126,7 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
-    public void onLogoutButton(View v){
+    public void onLogoutButton(){
         //Forget who's logged in
         TwitterApp.getRestClient(this).clearAccessToken();
         //Navigate backwards to login screen

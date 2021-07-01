@@ -24,6 +24,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     Context context;
     List<Tweet> tweets;
 
+    public void clear(){
+        tweets.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<Tweet> list){
+        tweets.addAll(list);
+        notifyDataSetChanged();
+    }
+
     //Pass in the context and list of tweets
     public TweetsAdapter(Context context, List<Tweet> tweets) {
         this.context = context;
@@ -52,12 +62,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         return tweets.size();
     }
 
-    //Define a viewholder
+    //Define a viewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvScreenName;
         TextView tvBody;
         ImageView ivProfile;
         TextView tvDate;
+        ImageView ivPhoto;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +76,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody = itemView.findViewById(R.id.tvBody);
             ivProfile = itemView.findViewById(R.id.ivProfile);
             tvDate = itemView.findViewById(R.id.tvDate);
+            ivPhoto = itemView.findViewById(R.id.ivPhoto);
         }
 
         public void bind(Tweet tweet){
@@ -72,6 +84,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName.setText(tweet.user.screenName);
             tvDate.setText(tweet.createdAt);
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfile);
+            if(tweet.entityPhoto != null){
+                Glide.with(context).load(tweet.entityPhoto).into(ivPhoto);
+                ivPhoto.setVisibility(View.VISIBLE);
+            }
         }
     }
 }
