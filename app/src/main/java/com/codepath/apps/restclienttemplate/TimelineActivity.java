@@ -90,6 +90,7 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                showProgressBar();
                 adapter.clear();
                 maxId = Long.MAX_VALUE;
                 sinceId = 1;
@@ -105,22 +106,25 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         //Inflate menu
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        miActionProgressItem = menu.findItem(R.id.miActionProgress);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
     }
 
     public void showProgressBar() {
         // Show progress item
-        if (miActionProgressItem != null) {
-            miActionProgressItem.setVisible(true);
-        }
+        miActionProgressItem.setVisible(true);
     }
 
     public void hideProgressBar() {
         // Hide progress item
-        if (miActionProgressItem != null) {
-            miActionProgressItem.setVisible(false);
-        }
+        miActionProgressItem.setVisible(false);
     }
 
     @Override
@@ -155,7 +159,6 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void fetchTimeLineAsync(){
-        showProgressBar();
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -166,6 +169,7 @@ public class TimelineActivity extends AppCompatActivity {
                 try {
                     adapter.addAll(Tweet.fromJsonArray(jsonArray));
                     swipeContainer.setRefreshing(false);
+                    hideProgressBar();
                 } catch (JSONException e) {
                     Log.e(TAG, "JSON exception" , e);
                     e.printStackTrace();
@@ -177,11 +181,9 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure:" + response , throwable);
             }
         });
-        hideProgressBar();
     }
 
     private void loadMoreTweets(long maxId) {
-        showProgressBar();
         client.getLatestTweets(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
