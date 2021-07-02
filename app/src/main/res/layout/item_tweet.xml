@@ -119,10 +119,28 @@
             android:id="@+id/rtBtn"
             android:layout_width="wrap_content"
             android:layout_height="14dp"
-            android:layout_marginStart="30dp"
-            android:layout_toEndOf="@+id/heartBtn"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/favCount"
             app:srcCompat="@drawable/ic_vector_retweet_stroke"
             tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/favCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_toEndOf="@+id/heartBtn"
+            android:textSize="11sp"
+            tools:text="150" />
+
+        <TextView
+            android:id="@+id/rtCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/rtBtn"
+            android:textSize="11sp"
+            tools:text="150" />
     </RelativeLayout>
 
     <LinearLayout

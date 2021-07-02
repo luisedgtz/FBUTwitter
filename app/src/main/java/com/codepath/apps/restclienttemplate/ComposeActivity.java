@@ -39,6 +39,9 @@ public class ComposeActivity extends AppCompatActivity {
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
 
+        //Change title of action bar
+        getSupportActionBar().setTitle("New Tweet");
+
         //Set click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override

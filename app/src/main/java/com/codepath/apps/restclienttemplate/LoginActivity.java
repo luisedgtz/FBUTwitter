@@ -23,6 +23,12 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 		final SampleModel sampleModel = new SampleModel();
 		sampleModel.setName("CodePath");
 
+		//Add logo and remove title from action bar
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
+		getSupportActionBar().setElevation(2);
+		getSupportActionBar().setTitle("");
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 		sampleModelDao = ((TwitterApp) getApplicationContext()).getMyDatabase().sampleModelDao();
 
 		AsyncTask.execute(new Runnable() {

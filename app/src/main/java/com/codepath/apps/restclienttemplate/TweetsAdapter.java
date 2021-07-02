@@ -73,6 +73,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvDate;
         ImageView ivPhoto;
         TextView tvName;
+        TextView tvRt;
+        TextView tvFav;
+        ImageView ivRT;
+        ImageView ivFV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +86,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivProfile = itemView.findViewById(R.id.ivProfile);
             tvDate = itemView.findViewById(R.id.tvDate);
             ivPhoto = itemView.findViewById(R.id.ivPhoto);
+            tvRt = itemView.findViewById(R.id.rtCount);
+            tvFav = itemView.findViewById(R.id.favCount);
+            ivFV = itemView.findViewById(R.id.heartBtn);
+            ivRT = itemView.findViewById(R.id.rtBtn);
         }
 
         public void bind(Tweet tweet){
@@ -89,6 +97,21 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName.setText(tweet.user.screenName);
             tvDate.setText(tweet.createdAt);
             tvName.setText(tweet.user.name);
+            tvRt.setText(String.valueOf(tweet.rtCount));
+            tvFav.setText(String.valueOf(tweet.favCount));
+
+            if (tweet.favorited) {
+                ivFV.setImageResource(R.drawable.ic_vector_heart_stroke_red);
+            }else{
+                ivFV.setImageResource(R.drawable.ic_vector_heart_stroke);
+            }
+
+            if (tweet.retweeted) {
+                ivRT.setImageResource(R.drawable.ic_vector_retweet_stroke_green);
+            }else{
+                ivRT.setImageResource(R.drawable.ic_vector_retweet_stroke);
+            }
+
             int margin = 0;
             int radius = 100;
             Glide.with(context).load(tweet.user.profileImageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(ivProfile);

@@ -58,7 +58,7 @@ public class TimelineActivity extends AppCompatActivity {
 
         //Add logo and remove title from action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.twitterlogo);
+        getSupportActionBar().setLogo(R.drawable.twitter);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setElevation(2);
         getSupportActionBar().setTitle("");
