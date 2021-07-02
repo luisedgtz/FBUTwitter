@@ -20,6 +20,7 @@ public class Tweet {
     private static final String TAG = "Tweet";
 
     public String body;
+    public Long id_str;
     public String createdAt;
     public User user;
     public String entityPhoto = null;
@@ -41,6 +42,7 @@ public class Tweet {
                 tweet.entityPhoto = mediaArray.getJSONObject(0).getString("media_url_https");
             }
         }
+        tweet.id_str = jsonObject.getLong("id");
         tweet.createdAt = tweet.getRelativeTimeAgo(jsonObject.getString("created_at"));
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         return tweet;

@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/btnLogout"
-        android:icon="@android:drawable/ic_menu_revert"
+        android:icon="@drawable/ic_vector_person_stroke"
         android:title="logout"
         app:showAsAction="always" />
     <item
         android:id="@+id/compose"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/vector_compose_fab"
         android:title="Compose"
         app:showAsAction="always" />
 

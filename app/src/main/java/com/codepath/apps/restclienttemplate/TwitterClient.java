@@ -62,6 +62,15 @@ public class TwitterClient extends OAuthBaseClient {
 		client.post(apiUrl, params, "" ,handler);
 	}
 
+	public void getLatestTweets(JsonHttpResponseHandler handler, long maxId){
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		params.put("tweet_mode", "extended");
+		params.put("max_id", maxId);
+		client.get(apiUrl, params, handler);
+	}
+
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)
